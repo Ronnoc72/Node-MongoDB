@@ -1,3 +1,6 @@
+// colors
+// d7fdec,a9fbd7,b2e4db,b0c6ce,938ba1
+
 const express = require('express');
 // colors text.
 const chalk = require('chalk');
@@ -9,11 +12,11 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
 // how the debuging is happening.
 app.use(morgan('tiny'));
-app.use(express.static(path.join(__dirname, '/public/')));
+app.use('/public', express.static(path.join(__dirname, 'public')))
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
@@ -22,5 +25,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log(`listening on port ${chalk.green(port)}.`);
+    console.log(`listening on port ${chalk.blue(port)}.`);
 });
