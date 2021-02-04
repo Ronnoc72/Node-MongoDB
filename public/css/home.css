@@ -63,3 +63,14 @@ ul > li {
     list-style-type: none;
     display: inline;
 }
+
+.hide {
+    display: none;
+}
+
+#highlight {
+    position: absolute;
+    background: rgba(247, 184, 48, 0.5);
+    width: 15px;
+    height: 40px;
+}
