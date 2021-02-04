@@ -10,9 +10,42 @@ body {
 h1 {
     text-align: center;
     color: #938ba1;
+    font-size: 42px;
 }
 
 footer {
     text-align: center;
 }
 
+.window {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.typing-window {
+    display: block;
+    background-color: #B2E4DB;
+    border: 10px solid #b0c6ce;
+    width: 75%;
+    height: 20em;
+}
+
+.stats {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 70%;
+    height: 5em;
+    background-color: #A9FBD7;
+}
+
+.text {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 85%;
+    height: 10em;
+    background-color: #A9FBD7;
+}
