@@ -1,76 +1,69 @@
 * {
-    font-family: 'Josefin Sans', sans-serif;
-    color: #b0c6ce;
+  font-family: "Josefin Sans", sans-serif;
+  color: #938ba1;
 }
 
 body {
-    background-color: #D7FDEC;
+  background-color: #d7fdec;
 }
 
 h1 {
-    text-align: center;
-    color: #938ba1;
-    font-size: 42px;
+  text-align: center;
+  color: #938ba1;
+  font-size: 42px;
 }
 
 footer {
-    text-align: center;
+  text-align: center;
 }
 
 .window {
-    margin-top: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .typing-window {
-    display: block;
-    background-color: #B2E4DB;
-    border: 10px solid #b0c6ce;
-    width: 75%;
-    height: 20em;
+  display: block;
+  background-color: #b2e4db;
+  border: 10px solid #b0c6ce;
+  width: 75%;
+  height: 20em;
 }
 
 .stats {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    width: 70%;
-    height: 5em;
-    background-color: #B0C6CE;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  width: 70%;
+  height: 5em;
+  background-color: #b0c6ce;
 }
 
 .text {
-    display: flex;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    width: 85%;
-    height: 10em;
-    background-color: #A9FBD7;
+  display: flex;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: 85%;
+  height: 10em;
+  background-color: #a9fbd7;
 }
 
 li {
-    font-size: 28px;
-    text-align: center;
+  font-size: 28px;
+  text-align: center;
 }
 
 ul > li {
-    align-items: center;
-    text-align: center;
-    list-style-type: none;
-    display: inline;
+  align-items: center;
+  text-align: center;
+  list-style-type: none;
+  display: inline;
 }
 
-.hide {
-    display: none;
-}
-
-#highlight {
-    position: absolute;
-    background: rgba(247, 184, 48, 0.5);
-    width: 15px;
-    height: 40px;
+.border {
+  border: 2px solid black;
 }

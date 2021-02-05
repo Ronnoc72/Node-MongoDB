@@ -6,10 +6,6 @@ const express = require('express');
 const chalk = require('chalk');
 // gets random words for what the user has to type.
 const randomWords = require('random-words');
-const wordList = [];
-for (let i = 0; i < 20; i++) {
-    wordList.push(`${randomWords()} `);
-}
 // debuging and understanding how the website is being created.
 // Use 'DEBUG=node [file name]' to get the debug.
 const debug = require('debug')('app');
@@ -29,6 +25,13 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
     res.render('index', {wordList: wordList});
 });
+
+app.get('/ref', (req, res) => {
+    const wordList = [];
+    for (let i = 0; i < 20; i++) {
+        wordList.push(`${randomWords()} `);
+    }
+})
 
 app.listen(3000, () => {
     console.log(`listening on port ${chalk.blue(port)}.`);
