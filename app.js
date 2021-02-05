@@ -1,6 +1,6 @@
 // colors
 // d7fdec,a9fbd7,b2e4db,b0c6ce,938ba1
-
+const wordsPerRound = 22;
 const express = require('express');
 // colors text.
 const chalk = require('chalk');
@@ -16,22 +16,25 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const wordList = [];
+
 // how the debuging is happening.
 app.use(morgan('tiny'));
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
+app.get('/key', (req, res) => {
     res.render('index', {wordList: wordList});
 });
 
-app.get('/ref', (req, res) => {
-    const wordList = [];
-    for (let i = 0; i < 20; i++) {
+app.get('/', (req, res) => {
+    wordList.splice(0, wordList.length);
+    for (let i = 0; i < wordsPerRound; i++) {
         wordList.push(`${randomWords()} `);
     }
-})
+    res.redirect('/key');
+});
 
 app.listen(3000, () => {
     console.log(`listening on port ${chalk.blue(port)}.`);
