@@ -1,8 +1,9 @@
 const screen = document.getElementById('window');
 const wpm = document.getElementById('wpm');
 const mistakes = document.getElementById('mistakes');
+const accuracyElement = document.getElementById('accuracy');
 const wordList = [];
-const startingLink = 'http://localhost:3000/'
+const startingLink = 'http://localhost:3000/';
 var index = 0;
 var startTime = 0;
 var mistakeCount = 0;
@@ -10,12 +11,18 @@ var pastLetter = '';
 var misssed = false;
 const words = document.getElementById('words');
 
-if (!localStorage.getItem('wmp') && !localStorage.getItem('mistakes')) {
+const xhr = new XMLHttpRequest();
+xhr.open('GET', startingLink, true);
+xhr.send('hello there');
+
+if (!localStorage.getItem('wmp') && !localStorage.getItem('mistakes') && !localStorage.getItem('accuracy')) {
     localStorage.setItem('wmp', '0');
     localStorage.setItem('mistakes', '0');
+    localStorage.setItem('accuracy', '0%')
 } else {
     wpm.innerHTML = `WMP: ${localStorage.getItem('wmp')}`;
     mistakes.innerHTML = `Mistakes: ${localStorage.getItem('mistakes')}`;
+    accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}`;
 }
 
 var started = false;
@@ -29,8 +36,6 @@ for (let i = 0; i < mainStr.length; i++) {
     span.innerHTML = mainStr[i];
     words.appendChild(span);
 }
-
-console.log(document.location);
 
 window.addEventListener('keydown', (e) => {
     if (!started) {
@@ -55,11 +60,14 @@ window.addEventListener('keydown', (e) => {
         var endTime = new Date().getTime() / 100000;
         const grossWMP = (mainStr.length / 5) / (endTime - startTime);
         const average = Math.round(grossWMP - (mistakeCount / (endTime - startTime)));
-        wpm.innerHTML = `WMP: ${localStorage.getItem('wmp')}`;
+        const accuracy = (100 - ((mainStr.length / mistakeCount) / 10));
+        wpm.innerHTML = `WPM: ${localStorage.getItem('wmp')}`;
         mistakes.innerHTML = `Mistakes: ${localStorage.getItem('mistakes')}`;
+        accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}`;
         localStorage.setItem('wmp', average.toString());
         localStorage.setItem('mistakes', mistakeCount.toString());
-        document.location.href = startingLink;
+        localStorage.setItem('accuracy', accuracy.toString());
+        document.location.href = `${startingLink}${average}/${mistakes}/${accuracy}`;
         started = false;
     }
 });

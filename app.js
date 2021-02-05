@@ -14,6 +14,7 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
+const router = express.Router();
 const port = process.env.PORT || 3000;
 
 const wordList = [];
@@ -28,11 +29,15 @@ app.get('/key', (req, res) => {
     res.render('index', {wordList: wordList});
 });
 
-app.get('/', (req, res) => {
+app.get('/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     wordList.splice(0, wordList.length);
     for (let i = 0; i < wordsPerRound; i++) {
         wordList.push(`${randomWords()} `);
     }
+    var wmp = req.params.wmp;
+    var mistakes = req.params.mistakes;
+    var accuracy = req.params.accuracy;
+    console.log(wmp, mistakes, accuracy);
     res.redirect('/key');
 });
 
