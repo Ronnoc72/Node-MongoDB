@@ -12,6 +12,8 @@ const debug = require('debug')('app');
 const morgan = require('morgan');
 // makes a path for a file.
 const path = require('path');
+// mongodb imports.
+const uri = "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority";
 
 const app = express();
 const router = express.Router();
@@ -34,9 +36,9 @@ app.get('/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     for (let i = 0; i < wordsPerRound; i++) {
         wordList.push(`${randomWords()} `);
     }
-    var wmp = req.params.wmp;
-    var mistakes = req.params.mistakes;
-    var accuracy = req.params.accuracy;
+    let wmp = req.params.wmp;
+    let mistakes = req.params.mistakes;
+    let accuracy = req.params.accuracy;
     console.log(wmp, mistakes, accuracy);
     res.redirect('/key');
 });
