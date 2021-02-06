@@ -60,14 +60,14 @@ window.addEventListener('keydown', (e) => {
         var endTime = new Date().getTime() / 100000;
         const grossWMP = (mainStr.length / 5) / (endTime - startTime);
         const average = Math.round(grossWMP - (mistakeCount / (endTime - startTime)));
-        const accuracy = (100 - ((mainStr.length / mistakeCount) / 10));
+        const accuracy = Math.floor((100 - ((mainStr.length / mistakeCount) / 10)));
         wpm.innerHTML = `WPM: ${localStorage.getItem('wmp')}`;
         mistakes.innerHTML = `Mistakes: ${localStorage.getItem('mistakes')}`;
-        accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}`;
+        accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}%`;
         localStorage.setItem('wmp', average.toString());
         localStorage.setItem('mistakes', mistakeCount.toString());
         localStorage.setItem('accuracy', accuracy.toString());
-        document.location.href = `${startingLink}${average}/${mistakes}/${accuracy}`;
+        document.location.href = `${startingLink}${average}/${mistakeCount}/${accuracy}`;
         started = false;
     }
 });
