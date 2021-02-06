@@ -13,7 +13,17 @@ const morgan = require('morgan');
 // makes a path for a file.
 const path = require('path');
 // mongodb imports.
-const uri = "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://connor:Ronnoc258?@sandbox.x7dhf.mongodb.net/Sandbox?retryWrites=true&w=majority";
+const mongoose = require('mongoose');
+
+function connectMongoDB(){
+    mongoose.connect('mongodb://localhost/Sandbox', {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoose.connection.once('open', () => {
+        console.log("Connection has been had.");
+    }).on('error', (err) => {
+        console.log('error is:' + err);
+    });
+}
 
 const app = express();
 const router = express.Router();
@@ -46,3 +56,5 @@ app.get('/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
 app.listen(3000, () => {
     console.log(`listening on port ${chalk.blue(port)}.`);
 });
+
+connectMongoDB();
