@@ -1,0 +1,52 @@
+* {
+  font-family: "Josefin Sans", sans-serif;
+  color: #938ba1;
+}
+
+body {
+  background-color: #d7fdec;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+input {
+  width: 40%;
+  height: 35px;
+  border: none;
+  transition-duration: 0.2s;
+  background: rgb(241, 241, 241);
+}
+
+.login {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+}
+
+.cell {
+  display: grid;
+  text-align: center;
+  grid-template-columns: repeat(1, auto);
+  grid-template-rows: repeat(4, auto);
+  background: #b0c6ce;
+  margin: 50px;
+  padding-bottom: 20px;
+}
+
+input:hover {
+  transition-duration: 0.2s;
+  background-color: rgb(216, 216, 216);
+}
+
+.active {
+  width: 50%;
+}
+
+.login-btns {
+  width: 50%;
+}
+
+p {
+  position: absolute;
+}

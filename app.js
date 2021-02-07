@@ -13,17 +13,8 @@ const morgan = require('morgan');
 // makes a path for a file.
 const path = require('path');
 // mongodb imports.
-const uri = "mongodb+srv://connor:Ronnoc258?@sandbox.x7dhf.mongodb.net/Sandbox?retryWrites=true&w=majority";
-const mongoose = require('mongoose');
-
-function connectMongoDB(){
-    mongoose.connect('mongodb://localhost/Sandbox', {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoose.connection.once('open', () => {
-        console.log("Connection has been had.");
-    }).on('error', (err) => {
-        console.log('error is:' + err);
-    });
-}
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/";
 
 const app = express();
 const router = express.Router();
@@ -37,24 +28,44 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
+app.get('/', (req, res) => {
+    res.redirect('/login');
+})
+
 app.get('/key', (req, res) => {
     res.render('index', {wordList: wordList});
 });
 
-app.get('/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
+app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     wordList.splice(0, wordList.length);
     for (let i = 0; i < wordsPerRound; i++) {
         wordList.push(`${randomWords()} `);
     }
-    let wmp = req.params.wmp;
-    let mistakes = req.params.mistakes;
-    let accuracy = req.params.accuracy;
-    console.log(wmp, mistakes, accuracy);
+    let _wpm = req.params.wmp;
+    let _mistakes = req.params.mistakes;
+    let _accuracy = req.params.accuracy;
+    if (_wpm && _mistakes && _accuracy) {
+        MongoClient.connect(url, (err, db) => {
+            if (err) throw err;
+            const dbo = db.db('mydb');
+            const typingInfo = { wpm: _wpm, mistakes: _mistakes, accuracy: _accuracy };
+            dbo.collection('customers').insertOne(typingInfo, (err, res) => {
+                if (err) throw err;
+            });
+            dbo.collection('customers').find({}).toArray((err, result) => {
+                if (err) throw err;
+                console.log(result);
+                db.close();
+            })
+        });
+    }
     res.redirect('/key');
 });
+
+app.get('/login', (req, res) => {
+    res.render('home');
+})
 
 app.listen(3000, () => {
     console.log(`listening on port ${chalk.blue(port)}.`);
 });
-
-connectMongoDB();
