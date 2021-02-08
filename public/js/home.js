@@ -11,10 +11,6 @@ var pastLetter = '';
 var missed = false;
 const words = document.getElementById('words');
 
-const xhr = new XMLHttpRequest();
-xhr.open('GET', startingLink, true);
-xhr.send('hello there');
-
 if (!localStorage.getItem('wmp') && !localStorage.getItem('mistakes') && !localStorage.getItem('accuracy')) {
     localStorage.setItem('wmp', '0');
     localStorage.setItem('mistakes', '0');
@@ -69,4 +65,8 @@ window.addEventListener('keydown', (e) => {
         document.location.href = `${startingLink}${grossWMP}/${mistakeCount}/${accuracy}`;
         started = false;
     }
+});
+
+document.getElementById('info').addEventListener('click', () => {
+    document.location.href = `http://localhost:3000/info`;
 });

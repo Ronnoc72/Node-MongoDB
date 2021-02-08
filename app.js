@@ -117,7 +117,7 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/key', (req, res) => {
-    res.render('index', {wordList: wordList});
+    res.render('index', {wordList: wordList, user: user.user});
 });
 
 app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
