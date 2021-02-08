@@ -67,3 +67,7 @@ ul > li {
 .border {
   border: 2px solid black;
 }
+
+span {
+  font-size: 26px;
+}

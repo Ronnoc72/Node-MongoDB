@@ -1,5 +1,5 @@
 const inputs = document.getElementsByClassName('boxes');
-const warn = document.getElementById('warning');
+const body = document.getElementById('window');
 
 for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('click', () => {
@@ -13,11 +13,17 @@ for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('change', () => {
         const pos = inputs[i].getBoundingClientRect();
         if (inputs[i].value.includes(" ")) {
-            warn.style.top = pos.top + 'px';
-            warn.style.left = pos.left + 'px';
-            warn.innerHTML = "Spaces aren't allowed.";
+            const p = document.createElement('p');
+            p.style.top = (pos.top - 10) + 'px';
+            p.style.left = (pos.left - 100) + 'px';
+            p.innerHTML = "Spaces aren't<br /> allowed.";
+            body.appendChild(p);
         } else {
-            warn.innerHTML = "";
+            document.getElementById('window').childNodes.forEach(elmt => {
+                if (elmt.nodeName == 'P') {
+                    document.getElementById('window').removeChild(elmt);
+                }
+            })
         }
     });
 }

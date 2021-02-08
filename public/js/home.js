@@ -3,12 +3,12 @@ const wpm = document.getElementById('wpm');
 const mistakes = document.getElementById('mistakes');
 const accuracyElement = document.getElementById('accuracy');
 const wordList = [];
-const startingLink = 'http://localhost:3000/';
+const startingLink = 'http://localhost:3000/key/';
 var index = 0;
 var startTime = 0;
 var mistakeCount = 0;
 var pastLetter = '';
-var misssed = false;
+var missed = false;
 const words = document.getElementById('words');
 
 const xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ if (!localStorage.getItem('wmp') && !localStorage.getItem('mistakes') && !localS
 } else {
     wpm.innerHTML = `WMP: ${localStorage.getItem('wmp')}`;
     mistakes.innerHTML = `Mistakes: ${localStorage.getItem('mistakes')}`;
-    accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}`;
+    accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}%`;
 }
 
 var started = false;
@@ -39,7 +39,7 @@ for (let i = 0; i < mainStr.length; i++) {
 
 window.addEventListener('keydown', (e) => {
     if (!started) {
-        startTime = new Date().getTime() / 100000;
+        startTime = new Date().getTime() / 1000;
     }
     const key = e.key;
     if (words.children[index].innerHTML == key) {
@@ -52,22 +52,21 @@ window.addEventListener('keydown', (e) => {
         if (!missed) {
             mistakeCount++; 
         }
-        console.log(mistakeCount);
         missed = true;
     }
     if (index + 1 === words.children.length) {
         index = 0;
-        var endTime = new Date().getTime() / 100000;
-        const grossWMP = (mainStr.length / 5) / (endTime - startTime);
-        const average = Math.round(grossWMP - (mistakeCount / (endTime - startTime)));
-        const accuracy = Math.floor((100 - ((mainStr.length / mistakeCount) / 10)));
+        var endTime = new Date().getTime() / 1000;
+        const minutes = (endTime - startTime) / 60;
+        const grossWMP = Math.round((mainStr.length / 5) / minutes);
+        const accuracy = 100 - Math.floor((mainStr.length - mistakeCount) / 10);
         wpm.innerHTML = `WPM: ${localStorage.getItem('wmp')}`;
         mistakes.innerHTML = `Mistakes: ${localStorage.getItem('mistakes')}`;
         accuracyElement.innerHTML = `Accuracy: ${localStorage.getItem('accuracy')}%`;
-        localStorage.setItem('wmp', average.toString());
+        localStorage.setItem('wmp', grossWMP.toString());
         localStorage.setItem('mistakes', mistakeCount.toString());
         localStorage.setItem('accuracy', accuracy.toString());
-        document.location.href = `${startingLink}${average}/${mistakeCount}/${accuracy}`;
+        document.location.href = `${startingLink}${grossWMP}/${mistakeCount}/${accuracy}`;
         started = false;
     }
 });

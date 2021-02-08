@@ -10,26 +10,26 @@
     <title>Login Page</title>
 </head>
 <body>
-    <div class="login">
+    <h3><%=message%></h3>
+    <div class="login" id="window">
         <div class="cell">
             <h1>Login: </h1>
-            <form action="/key" method="POST">
-                <input type="text" id="user" name="user" class="boxes" placeholder="Username"><br><br>
-                <input type="text" id="pass" name="pass" class="boxes" placeholder="Password"><br><br>
-                <input type="submit" value="Login">
+            <form action="/login" method="POST">
+                <input type="text" id="user" name="user" class="boxes" placeholder="Username" required><br><br>
+                <input type="text" id="pass" name="pass" class="boxes" placeholder="Password" required><br><br>
+                <input type="submit" class="login-btn" value="Login">
             </form>
         </div>
         <div class="cell">
             <h1>Register: </h1>
-            <form action="/key" method="POST">
-                <input type="text" id="user_reg" name="user_reg" class="boxes" placeholder="Username"><br><br>
-                <input type="text" id="pass_reg" name="pass_reg" class="boxes" placeholder="Password"><br><br>
-                <input type="text" id="pass_reg" name="pass_reg" class="boxes" placeholder="Confirm Password"><br><br>
-                <input type="submit" value="Register">
+            <form action="/register" method="POST">
+                <input type="text" id="user" name="user" class="boxes" placeholder="Username" required><br><br>
+                <input type="text" id="pass" name="pass" class="boxes" placeholder="Password" required><br><br>
+                <input type="text" id="pass2" name="pass2" class="boxes" placeholder="Confirm Password" required><br><br>
+                <input type="submit" class="login-btn" value="Register">
             </form>
         </div>
     </div>
-    <p id="warning"></p>
     <script src="/public/js/login.js" defer></script>
 </body>
 </html>
