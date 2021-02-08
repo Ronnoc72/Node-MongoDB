@@ -13,17 +13,28 @@ const morgan = require('morgan');
 // makes a path for a file.
 const path = require('path');
 // mongodb imports.
+const dbName = 'mydb';
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/";
+function createDatabase() {
+    MongoClient.connect(url + dbName, { useUnifiedTopology: true }, (err, db) => {
+        if (db.db.length >= 1) {
+            return;
+        }
+        if (err) throw err;
+        console.log('database created.');
+        db.close();
+    });
+}
 function removeDatabase() {
     MongoClient.connect(url, (err, db) => {
-        const dbo = db.db('mydb');
+        const dbo = db.db(dbName);
         dbo.dropCollection('customers');
     });
 }
 function addUser(_user, _pass) {
     MongoClient.connect(url, (err, db) => {
-        const dbo = db.db('mydb');
+        const dbo = db.db(dbName);
         const typingAccount = {user: _user, pass: _pass, wpm: [], mistakes: [], accuracy: []};
         dbo.collection('customers').insertOne(typingAccount, (err, res) => {
             if (err) throw err;
@@ -33,7 +44,7 @@ function addUser(_user, _pass) {
 }
 function displayDB() {
     MongoClient.connect(url, (err, db) => {
-        const dbo = db.db('mydb');
+        const dbo = db.db(dbName);
         dbo.collection('customers').find({}).toArray((err, result) => {
             if (err) throw err;
             result.forEach(r => {
@@ -68,15 +79,15 @@ app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
+    // createDatabase();
     res.render('home', {message: message});
-    displayDB();
 });
 
 app.post('/login', (req, res) => {
     console.log(req.body.user);
     console.log(req.body.pass);
     MongoClient.connect(url, (err, db) => {
-        const dbo = db.db('mydb');
+        const dbo = db.db(dbName);
         dbo.collection('customers').find({'user': req.body.user, 'pass': req.body.pass})
         .toArray((err, result) => {
             if (err) throw err;
@@ -95,7 +106,7 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
     MongoClient.connect(url, (err, db) => {
-        const dbo = db.db('mydb');
+        const dbo = db.db(dbName);
         dbo.collection('customers').find({'user': req.body.user, 'pass': req.body.pass})
         .toArray((err, result) => {
             if (err) throw err;
@@ -131,7 +142,7 @@ app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     if (_wpm && _mistakes && _accuracy) {
         MongoClient.connect(url, (err, db) => {
             if (err) throw err;
-            const dbo = db.db('mydb');
+            const dbo = db.db(dbName);
             dbo.collection('customers').findOne(user, (err, result) => {
                 if (err) throw err;
                 result.wpm.push(_wpm);
