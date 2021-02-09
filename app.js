@@ -125,26 +125,44 @@ app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     for (let i = 0; i < wordsPerRound; i++) {
         wordList.push(`${randomWords()} `);
     }
-    let _wpm = req.params.wmp;
-    let _mistakes = req.params.mistakes;
-    let _accuracy = req.params.accuracy;
+    var _wpm = req.params.wmp;
+    var _mistakes = req.params.mistakes;
+    var _accuracy = req.params.accuracy;
     if (_wpm && _mistakes && _accuracy) {
         MongoClient.connect(url, (err, db) => {
             if (err) throw err;
             const dbo = db.db('mydb');
-            dbo.collection('customers').findOne(user, (err, result) => {
-                if (err) throw err;
-                result.wpm.push(_wpm);
-                result.mistakes.push(_mistakes);
-                result.accuracy.push(_accuracy);
-            });
+            dbo.collection('customers').find({user: user.user, pass: user.pass}).toArray((err, result) => {
+                const wpmReplace = result[0].wpm;
+                wpmReplace.push(_wpm);
+                const mistakesReplace = result[0].mistakes;
+                mistakesReplace.push(_mistakes);
+                const accuracyReplace = result[0].accuracy;
+                accuracyReplace.push(_accuracy);
+                dbo.collection('customers').updateOne({user: user.user, pass: user.pass}, 
+                    {$set: {wpm: wpmReplace, mistakes: mistakesReplace, accuracy: accuracyReplace}});
+            })
         });
     }
     res.redirect('/key');
 });
 
 app.get('/info', (req, res) => {
-    res.render('info');
+    if (user === '') {
+        res.redirect('/key');
+    }
+    MongoClient.connect(url, (err, db) => {
+        const dbo = db.db('mydb');
+        dbo.collection('customers').find({user: user.user, pass: user.pass}).toArray((err, result) => {
+            if (err) throw err;
+            const userInfo = result[0];
+            var _wpm = userInfo.wpm;
+            var _mistakes = userInfo.mistakes;
+            var _accuracy = userInfo.accuracy;
+            res.render('info', {wpmList: _wpm, mistakesList: _mistakes, accuracyList: _accuracy, total: _wpm.length});
+        });
+        db.close();
+    });
 });
 
 app.listen(3000, () => {

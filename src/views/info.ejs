@@ -10,7 +10,9 @@
     <title>Infomation</title>
 </head>
 <body>
-    <h1>Infomation</h1>
+    <%for (let i = 0; i < total; i++) {%>
+        <p><%=wpmList[i]%></p>
+    <%}%>
     <script src="/public/js/info.js"></script>
 </body>
 </html>
