@@ -17,8 +17,10 @@ const dbName = 'mydb';
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/";
 function createDatabase() {
+    // creates the database if it doesn't exist.
     MongoClient.connect(url + dbName, { useUnifiedTopology: true }, (err, db) => {
         if (db.db.length >= 1) {
+            console.log('database connected');
             return;
         }
         if (err) throw err;
@@ -27,12 +29,14 @@ function createDatabase() {
     });
 }
 function removeDatabase() {
+    // removes the information in the database (testing perposes)
     MongoClient.connect(url, (err, db) => {
         const dbo = db.db(dbName);
         dbo.dropCollection('customers');
     });
 }
 function addUser(_user, _pass) {
+    // adds a new user to the database using the '/register'
     MongoClient.connect(url, (err, db) => {
         const dbo = db.db(dbName);
         const typingAccount = {user: _user, pass: _pass, wpm: [], mistakes: [], accuracy: []};
@@ -43,6 +47,7 @@ function addUser(_user, _pass) {
     });
 }
 function displayDB() {
+    // displays the database, for testing
     MongoClient.connect(url, (err, db) => {
         const dbo = db.db(dbName);
         dbo.collection('customers').find({}).toArray((err, result) => {
@@ -78,6 +83,7 @@ app.use(bodyParser.urlencoded({
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
+// login page
 app.get('/', (req, res) => {
     // createDatabase();
     res.render('home', {message: message});
@@ -126,11 +132,11 @@ app.post('/register', (req, res) => {
         db.close();
     });
 });
-
+// main app page
 app.get('/key', (req, res) => {
     res.render('index', {wordList: wordList, user: user.user});
 });
-
+// getting the data from the user
 app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     wordList.splice(0, wordList.length);
     for (let i = 0; i < wordsPerRound; i++) {
@@ -142,8 +148,7 @@ app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     if (_wpm && _mistakes && _accuracy) {
         MongoClient.connect(url, (err, db) => {
             if (err) throw err;
-<<<<<<< HEAD
-            const dbo = db.db('mydb');
+            const dbo = db.db(dbName);
             dbo.collection('customers').find({user: user.user, pass: user.pass}).toArray((err, result) => {
                 const wpmReplace = result[0].wpm;
                 wpmReplace.push(_wpm);
@@ -153,21 +158,18 @@ app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
                 accuracyReplace.push(_accuracy);
                 dbo.collection('customers').updateOne({user: user.user, pass: user.pass}, 
                     {$set: {wpm: wpmReplace, mistakes: mistakesReplace, accuracy: accuracyReplace}});
-            })
-=======
-            const dbo = db.db(dbName);
+            });
             dbo.collection('customers').findOne(user, (err, result) => {
                 if (err) throw err;
                 result.wpm.push(_wpm);
                 result.mistakes.push(_mistakes);
                 result.accuracy.push(_accuracy);
             });
->>>>>>> 40df76826b07e38e7a2c69819c0341da6eb7c596
         });
     }
     res.redirect('/key');
 });
-
+// where the user can go to look at the data.
 app.get('/info', (req, res) => {
     if (user === '') {
         res.redirect('/key');
