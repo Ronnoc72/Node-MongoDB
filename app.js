@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
     // createDatabase();
     res.render('home', {message: message});
 });
-
+// getting the users login info and fetching their data.
 app.post('/login', (req, res) => {
     console.log(req.body.user);
     console.log(req.body.pass);
@@ -109,7 +109,7 @@ app.post('/login', (req, res) => {
         db.close();
     });
 });
-
+// the function that creates accounts if they don't exist.
 app.post('/register', (req, res) => {
     MongoClient.connect(url, (err, db) => {
         const dbo = db.db(dbName);
@@ -136,7 +136,7 @@ app.post('/register', (req, res) => {
 app.get('/key', (req, res) => {
     res.render('index', {wordList: wordList, user: user.user});
 });
-// getting the data from the user
+// getting the data from the user and putting it into the database.
 app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
     wordList.splice(0, wordList.length);
     for (let i = 0; i < wordsPerRound; i++) {
