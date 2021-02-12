@@ -43,6 +43,10 @@ function addUser(_user, _pass) {
         dbo.collection('customers').insertOne(typingAccount, (err, res) => {
             if (err) throw err;
         });
+        dbo.collection('customers').find(typingAccount).toArray((err, result) => {
+            if (err) throw err;
+            user = result[0];
+        })
         db.close();
     });
 }
@@ -164,6 +168,7 @@ app.get('/key/:wmp?/:mistakes?/:accuracy?', (req, res, next) => {
                 result.wpm.push(_wpm);
                 result.mistakes.push(_mistakes);
                 result.accuracy.push(_accuracy);
+                user = result;
             });
         });
     }
@@ -182,10 +187,25 @@ app.get('/info', (req, res) => {
             var _wpm = userInfo.wpm;
             var _mistakes = userInfo.mistakes;
             var _accuracy = userInfo.accuracy;
-            res.render('info', {wpmList: _wpm, mistakesList: _mistakes, accuracyList: _accuracy, total: _wpm.length});
+            var averageWpm = 0;
+            var averageMis = 0;
+            var averageAcc = 0;
+            _wpm.forEach(elem => averageWpm += Number(elem));
+            averageWpm /= _wpm.length;
+            _mistakes.forEach(elem => averageMis += Number(elem));
+            averageMis /= _mistakes.length;
+            _accuracy.forEach(elem => averageAcc += Number(elem));
+            averageAcc /= _accuracy.length;
+            res.render('info', {averageWpm: Math.floor(averageWpm), averageMis: Math.floor(averageMis),
+                averageAcc: Math.floor(averageAcc), total: _wpm.length});
         });
         db.close();
     });
+});
+// logout of the main home and user is redefined.
+app.get('/logout', (req, res) => {
+    user = undefined;
+    res.redirect('/');
 });
 
 app.listen(3000, () => {

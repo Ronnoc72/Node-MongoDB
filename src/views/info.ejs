@@ -10,9 +10,28 @@
     <title>Infomation</title>
 </head>
 <body>
-    <%for (let i = 0; i < total; i++) {%>
-        <p><%=wpmList[i]%></p>
-    <%}%>
+    <div class="average">
+        <div class="wpm">
+            <p>Average WPM:</p>
+            <br />
+            <span><%=averageWpm%></span>
+        </div>
+        <div class="mistakes">
+            <p>Average Mistakes:</p>
+            <br />
+            <span><%=averageMis%></span>
+        </div>
+        <div class="accuracy">
+            <p>Average Accuracy:</p>
+            <br />
+            <span><%=averageAcc%></span>
+        </div>
+    </div>
+    <div class="total">
+        <p>Total Number of Text Snippets Typed:</p>
+        <span><%=total%></span>
+    </div>
+    <a href="http://localhost:3000/key">BACK</a>
     <script src="/public/js/info.js"></script>
 </body>
 </html>
